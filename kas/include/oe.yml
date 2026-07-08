@@ -3,14 +3,14 @@ header:
 
 repos:
   bitbake:
-    url: https://git.openembedded.org/bitbake
+    url: https://github.com/openembedded/bitbake
     path: layers/bitbake
     branch: master
     layers:
       bitbake: disabled
 
   core:
-    url: https://git.openembedded.org/openembedded-core
+    url: https://github.com/openembedded/openembedded-core
     path: layers/openembedded-core
     branch: master
     layers:
@@ -24,7 +24,7 @@ repos:
        meta-poky:
 
   meta-openembedded:
-    url: https://git.openembedded.org/meta-openembedded
+    url: https://github.com/openembedded/meta-openembedded
     path: layers/meta-openembedded
     branch: master
     layers:

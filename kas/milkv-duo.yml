@@ -3,4 +3,4 @@ header:
   includes:
     - kas/base-riscv.yml
 
-machine: milkv-duo 
+machine: milkv-duo256m
