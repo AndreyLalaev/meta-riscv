@@ -2,19 +2,23 @@ require linux-mainline-common.inc
 
 SUMMARY = "Milk-V Duo mainline kernel recipe"
 
-LINUX_VERSION ?= "6.17.8"
+LINUX_VERSION ?= "7.0.14"
 
-BRANCH = "linux-6.17.y"
-SRCREV = "v6.17.8"
+BRANCH = "linux-7.0.y"
+SRCREV = "v7.0.14"
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git;protocol=https;branch=${BRANCH} \
            file://dts-exclude-memory-occupied-by-opensbi.patch \
            file://0001-sophgo-add-cv1800-rtcsys-reset-handler.patch \
            file://milkv-duo_defconfig \
            file://multi.its \
+           file://0001-dts.patch \
+           file://0002-dts.patch \
+           file://0001-sg2002-reserve-opensbi-region.patch \
            "
 
 KERNEL_FEATURES_RISCV = ""
 KERNEL_DEVICETREE:milkv-duo ?= "sophgo/cv1800b-milkv-duo.dtb"
+KERNEL_DEVICETREE:milkv-duo256m ?= "sophgo/sg2002-milkv-duo256m.dtb"
 KBUILD_DEFCONFIG:milkv-duo = ""
 
 DEPENDS = "u-boot-mkimage-native dtc-native"

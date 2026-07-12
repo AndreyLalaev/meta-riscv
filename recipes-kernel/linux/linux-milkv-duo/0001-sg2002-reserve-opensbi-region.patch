@@ -1,0 +1,29 @@
+From 537c70495a500a85d716b407524fe10b17948122 Mon Sep 17 00:00:00 2001
+From: Andrei Lalaev <andrey.lalaev@gmail.com>
+Date: Fri, 10 Jul 2026 20:59:26 +0200
+Subject: [PATCH] sg2002: reserve opensbi region
+
+Upstream-Status: Pending
+---
+ arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
+index 21ef6ed9f0d2..21b8bd3be47a 100644
+--- a/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
++++ b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
+@@ -46,6 +46,11 @@ coprocessor_rtos: region@83f40000 {
+ 			reg = <0x83f40000 0xc0000>;
+ 			no-map;
+ 		};
++
++		opensbi {
++			reg = <0x80000000 0x60000>;
++			no-map;
++		};
+ 	};
+ };
+ 
+-- 
+2.53.0
+

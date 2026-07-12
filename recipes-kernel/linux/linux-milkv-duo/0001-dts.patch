@@ -1,0 +1,55 @@
+Subject: [PATCH v3 2/3] riscv: dts: sophgo: cv180x: Add PWR_GPIO controller
+From: Chen-Yu Yeh <chenyou910331@gmail.com>
+Date: Fri, 10 Jul 2026 15:59:16 +0800
+Message-Id: <20260710075917.159969-3-chenyou910331@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+The CV180x/CV181x family has an additional DesignWare APB GPIO
+controller (PWR_GPIO) located in the always-on power domain at
+0x5021000. Add the node so that boards can reference GPIOs in this
+bank, such as status LEDs.
+
+Signed-off-by: Chen-Yu Yeh <chenyou910331@gmail.com>
+Upstream-Status: Pending
+---
+The base address and interrupt number match the vendor SDK device
+tree (cv181x_base_riscv.dtsi: gpio@05021000, PLIC interrupt 70,
+i.e. SOC_PERIPHERAL_IRQ(54)). Verified on Milk-V Duo 256M hardware
+via the onboard status LED on porte 2.
+
+ arch/riscv/boot/dts/sophgo/cv180x.dtsi | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/cv180x.dtsi b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
+index 06b0ce5a2db7..25ad2bd265d7 100644
+--- a/arch/riscv/boot/dts/sophgo/cv180x.dtsi
++++ b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
+@@ -160,6 +160,24 @@ portd: gpio-controller@0 {
+ 			};
+ 		};
+ 
++		gpio4: gpio@5021000 {
++			compatible = "snps,dw-apb-gpio";
++			reg = <0x5021000 0x1000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			porte: gpio-controller@0 {
++				compatible = "snps,dw-apb-gpio-port";
++				gpio-controller;
++				#gpio-cells = <2>;
++				ngpios = <32>;
++				reg = <0>;
++				interrupt-controller;
++				#interrupt-cells = <2>;
++				interrupts = <SOC_PERIPHERAL_IRQ(54) IRQ_TYPE_LEVEL_HIGH>;
++			};
++		};
++
+ 		saradc: adc@30f0000 {
+ 			compatible = "sophgo,cv1800b-saradc";
+ 			reg = <0x030f0000 0x1000>;
+-- 
+2.43.0
