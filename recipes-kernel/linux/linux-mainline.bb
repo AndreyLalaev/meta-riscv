@@ -86,6 +86,10 @@ SRC_URI:append:milkv-duo256m = " \
            file://milkv-duo256m.cfg \
 "
 
+SRC_URI:append:milkv-duos = " \
+           file://milkv-duos.cfg \
+"
+
 # --- Misc per-machine ---
 INSANE_SKIP:append:eswin-ebc77-mainline                 = " textrel"
 KERNEL_DANGLING_FEATURES_WARN_ONLY:eswin-ebc77-mainline = "1"
@@ -94,6 +98,7 @@ KBUILD_DEFCONFIG:eswin-ebc77-mainline = ""
 KBUILD_DEFCONFIG:milkv-duo            = ""
 KERNEL_DEVICETREE:milkv-duo     ?= "sophgo/cv1800b-milkv-duo.dtb"
 KERNEL_DEVICETREE:milkv-duo256m ?= "sophgo/sg2002-milkv-duo256m.dtb"
+KERNEL_DEVICETREE:milkv-duos    ?= "sophgo/sg2000-milkv-duo-s.dtb"
 KERNEL_FEATURES_RISCV:milkv-duo  = ""
 
 do_deploy:append:milkv-duo() {
