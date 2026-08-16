@@ -78,12 +78,17 @@ SRC_URI:append:milkv-duo = " \
         file://0001-riscv-dts-sophgo-cv180x-Add-PWR_GPIO-controller.patch \
         file://0002-riscv-dts-sophgo-Add-Milk-V-Duo-256M-board-support.patch \
         file://0003-duo256m-reserve-opensbi-region.patch \
+        file://0001-riscv-sg2000-milkv-duo-s-reserve-memory.patch \
         file://milkv-duo_defconfig \
         file://multi.its \
 "
 
 SRC_URI:append:milkv-duo256m = " \
            file://milkv-duo256m.cfg \
+"
+
+SRC_URI:append:milkv-duos = " \
+           file://milkv-duos.cfg \
 "
 
 # --- Misc per-machine ---
@@ -94,6 +99,7 @@ KBUILD_DEFCONFIG:eswin-ebc77-mainline = ""
 KBUILD_DEFCONFIG:milkv-duo            = ""
 KERNEL_DEVICETREE:milkv-duo     ?= "sophgo/cv1800b-milkv-duo.dtb"
 KERNEL_DEVICETREE:milkv-duo256m ?= "sophgo/sg2002-milkv-duo256m.dtb"
+KERNEL_DEVICETREE:milkv-duos    ?= "sophgo/sg2000-milkv-duo-s.dtb"
 KERNEL_FEATURES_RISCV:milkv-duo  = ""
 
 do_deploy:append:milkv-duo() {
