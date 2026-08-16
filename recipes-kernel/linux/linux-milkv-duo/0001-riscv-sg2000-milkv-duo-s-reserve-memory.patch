@@ -1,0 +1,40 @@
+From efc16e238b87a6102e7a6527693672cdc391539c Mon Sep 17 00:00:00 2001
+From: Andrei Lalaev <andrey.lalaev@gmail.com>
+Date: Sun, 16 Aug 2026 18:26:26 +0200
+Subject: [PATCH] riscv: sg2000-milkv-duo-s: reserve memory
+
+Upstream-Status: Inappropriate [oe-specific]
+---
+ .../riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+index 78a257839f6f..83f3ee39a66f 100644
+--- a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
++++ b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+@@ -28,6 +28,22 @@ wifi_pwrseq: wifi-pwrseq {
+ 		power-off-delay-us = <50000>;
+ 		post-power-on-delay-ms = <200>;
+ 	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		coprocessor_rtos: region@9fe00000 {
++			reg = <0x9fe00000 0x200000>;
++			no-map;
++		};
++
++		opensbi {
++			reg = <0x80000000 0x80000>;
++			no-map;
++		};
++	};
+ };
+ 
+ &osc {
+-- 
+2.55.0
+

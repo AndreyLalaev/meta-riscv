@@ -86,6 +86,10 @@ SRC_URI:append:milkv-duo256m = " \
            file://milkv-duo256m.cfg \
 "
 
+SRC_URI:append:milkv-duos = " \
+           file://milkv-duos.cfg \
+"
+
 # --- Misc per-machine ---
 INSANE_SKIP:append:eswin-ebc77-mainline                 = " textrel"
 KERNEL_DANGLING_FEATURES_WARN_ONLY:eswin-ebc77-mainline = "1"
