@@ -33,29 +33,19 @@ SRC_URI:append:k1 = " \
             file://bootcommand.cfg \
             "
 
+# doesn't support milk-v duo-s yet
 SRC_URI:milkv-duo = " \
-            git://github.com/milkv-duo/milkv-duo-u-boot;protocol=https;branch=duo-64mb \
+            git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
             file://uboot-milkv-duo.env \
             file://uEnv-milkv-duo.txt \
             file://mmap_conv.py \
             file://memmap.py \
-            file://milkv-duo-support-files.patch \
-            file://0001-skip-cvitek-board-init.patch \
-            file://0002-Add-milkv-boards-dtbs.patch \
+            file://milkv-duo256m.cfg \
             "
 
-SRC_URI:append:milkv-duo256m = " \
-    file://milkv-duo256m.cfg \
-"
+SRCREV:milkv-duo = "fce4beb533674318de796eac9b4f1a49ded7bef6"
 
-SRC_URI:append:milkv-duos = " \
-    file://milkv-duos.cfg \
-"
-
-SRCREV:milkv-duo = "4345a29c08e67044021f74139b4ff307019e9932"
-LIC_FILES_CHKSUM:milkv-duo = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"
-
-PV:milkv-duo = "2021.10"
+PV:milkv-duo = "2026.10"
 
 ###############################
 # configure task customizations
