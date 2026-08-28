@@ -92,8 +92,6 @@ KERNEL_DANGLING_FEATURES_WARN_ONLY:eswin-ebc77-mainline = "1"
 
 KBUILD_DEFCONFIG:eswin-ebc77-mainline = ""
 KBUILD_DEFCONFIG:milkv-duo            = ""
-KERNEL_DEVICETREE:milkv-duo     ?= "sophgo/cv1800b-milkv-duo.dtb"
-KERNEL_DEVICETREE:milkv-duo256m ?= "sophgo/sg2002-milkv-duo256m.dtb"
 KERNEL_FEATURES_RISCV:milkv-duo  = ""
 
 do_deploy:append:milkv-duo() {
