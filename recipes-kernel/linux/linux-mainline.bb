@@ -73,9 +73,7 @@ SRC_URI:append:eswin-ebc77-mainline = " \
 "
 
 SRC_URI:append:milkv-duo = " \
-        file://dts-exclude-memory-occupied-by-opensbi.patch \
         file://0001-sophgo-add-cv1800-rtcsys-reset-handler.patch \
-        file://0003-duo256m-reserve-opensbi-region.patch \
         file://milkv-duo_defconfig \
         file://multi.its \
 "
