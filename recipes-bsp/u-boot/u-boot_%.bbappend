@@ -73,6 +73,56 @@ do_configure:prepend:milkv-duo() {
     fi
 }
 
+python do_addheader() {
+    import binascii, os
+
+    def crc32(data):
+        crc = binascii.crc_hqx(data, 0)
+        return crc.to_bytes(2, 'little') + b'\xFE\xCA'
+
+    def p32(x):
+        return x.to_bytes(4, 'little')
+
+    def p64(x):
+        return x.to_bytes(8, 'little')
+
+    def pack_uboot(path):
+        with open(path, 'rb') as f:
+            uboot = f.read()
+
+        header_len = 0x20
+        # TODO: get TEXT_BASE from .config instead of hardcode
+        text_base = 0x80200020
+        element = [
+            ('SIZE', p32(len(uboot) + header_len)),
+            ('RUNADDR', p64(text_base - header_len)),
+            ('RESERVED1', p32(0)),
+            ('RESERVED1', p32(0)),
+            ('DATA', uboot),
+        ]
+        data = b''.join([v for k, v in element])
+        element = [
+            ('JUMP0', p32(0)),
+            ('MAGIC', b'BL33'),
+            ('CKSUM', crc32(data)),
+            ('DATA', data),
+        ]
+
+        return b''.join([v for k, v in element])
+
+    deploydir = d.getVar('DEPLOY_DIR_IMAGE')
+    uboot_raw = os.path.join(deploydir, 'u-boot.bin')
+    uboot_with_header = os.path.join(deploydir, 'u-boot-vendor.bin')
+    with open(uboot_with_header, 'wb') as f:
+        f.write(pack_uboot(uboot_raw))
+}
+
+python() {
+    machine = d.getVar('MACHINE')
+    if machine in ('milkv-duo', 'milkv-duo256m', 'milkv-duos'):
+        bb.build.addtask('addheader', 'do_build', 'do_deploy', d)
+}
+
 #############################
 # compile task customizations
 #############################
