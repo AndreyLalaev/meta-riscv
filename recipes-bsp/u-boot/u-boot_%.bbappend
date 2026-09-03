@@ -36,6 +36,7 @@ SRC_URI:append:k1 = " \
 # doesn't support milk-v duo-s yet
 SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
+            file://0001-mmc-cv1800b_sdhci-configure-SDHCI-PHY.patch \
             file://uboot-milkv-duo.env \
             file://uEnv-milkv-duo.txt \
             file://milkv-duo.cfg \
