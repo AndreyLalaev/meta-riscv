@@ -76,6 +76,63 @@ do_configure:prepend:milkv-duo() {
     fi
 }
 
+python do_addheader() {
+    import binascii, os
+
+    def crc32(data):
+        crc = binascii.crc_hqx(data, 0)
+        return crc.to_bytes(2, 'little') + b'\xFE\xCA'
+
+    def p32(x):
+        return x.to_bytes(4, 'little')
+
+    def p64(x):
+        return x.to_bytes(8, 'little')
+
+    def find_text_base():
+        cfg_path = os.path.join(d.getVar('B'), '.config')
+        with open(cfg_path, 'r') as cfg:
+            for line in cfg:
+                if line.startswith('CONFIG_TEXT_BASE'):
+                    return int(line.split('=')[1], base=16)
+
+    def pack_uboot(path):
+        with open(path, 'rb') as f:
+            uboot = f.read()
+
+        header_len = 0x20
+        text_base = find_text_base()
+        element = [
+            ('SIZE', p32(len(uboot) + header_len)),
+            ('RUNADDR', p64(text_base - header_len)),
+            ('RESERVED1', p32(0)),
+            ('RESERVED1', p32(0)),
+            ('DATA', uboot),
+        ]
+        data = b''.join([v for k, v in element])
+        element = [
+            ('JUMP0', p32(0)),
+            ('MAGIC', b'BL33'),
+            ('CKSUM', crc32(data)),
+            ('DATA', data),
+        ]
+
+        return b''.join([v for k, v in element])
+
+    builddir = d.getVar('B')
+    uboot_raw = os.path.join(builddir, 'u-boot.bin')
+    uboot_with_header = os.path.join(builddir, 'u-boot-vendor.bin')
+    with open(uboot_with_header, 'wb') as f:
+        f.write(pack_uboot(uboot_raw))
+}
+do_addheader[nostamp] = "1"
+
+python() {
+    machine = d.getVar('MACHINE')
+    if machine in ('milkv-duo', 'milkv-duo256m', 'milkv-duos'):
+        bb.build.addtask('addheader', 'do_deploy', 'do_compile', d)
+}
+
 #############################
 # compile task customizations
 #############################
@@ -144,6 +201,7 @@ do_deploy:append:milkv-duo() {
         cp ${UNPACKDIR}/uEnv-milkv-duo.txt ${DEPLOYDIR}/uEnv.txt
     fi
     install -m 0644 ${B}/u-boot.dtb ${DEPLOYDIR}
+    install -m 0644 ${B}/u-boot-vendor.bin ${DEPLOYDIR}
 }
 
 do_deploy:append:visionfive2() {
