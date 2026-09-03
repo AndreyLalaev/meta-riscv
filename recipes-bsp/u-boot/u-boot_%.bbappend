@@ -71,10 +71,6 @@ do_configure:prepend:freedom-u540() {
     fi
 }
 
-do_configure:prepend:milkv-duo() {
-    cp ${UNPACKDIR}/uboot-milkv-duo.env ${S}/include/milkv-duo.env
-}
-
 python do_addheader() {
     import binascii, os
 
