@@ -71,9 +71,7 @@ do_configure:prepend:freedom-u540() {
 }
 
 do_configure:prepend:milkv-duo() {
-    if [ -f "${UNPACKDIR}/uboot-milkv-duo.env" ]; then
-        cp ${UNPACKDIR}/uboot-milkv-duo.env ${S}/include/milkv-duo.env
-    fi
+    cp ${UNPACKDIR}/uboot-milkv-duo.env ${S}/include/milkv-duo.env
 }
 
 python do_addheader() {
@@ -113,17 +111,18 @@ python do_addheader() {
 
         return b''.join([v for k, v in element])
 
-    deploydir = d.getVar('DEPLOY_DIR_IMAGE')
-    uboot_raw = os.path.join(deploydir, 'u-boot.bin')
-    uboot_with_header = os.path.join(deploydir, 'u-boot-vendor.bin')
+    builddir = d.getVar('B')
+    uboot_raw = os.path.join(builddir, 'u-boot.bin')
+    uboot_with_header = os.path.join(builddir, 'u-boot-vendor.bin')
     with open(uboot_with_header, 'wb') as f:
         f.write(pack_uboot(uboot_raw))
 }
+do_addheader[nostamp] = "1"
 
 python() {
     machine = d.getVar('MACHINE')
     if machine in ('milkv-duo', 'milkv-duo256m', 'milkv-duos'):
-        bb.build.addtask('addheader', 'do_build', 'do_deploy', d)
+        bb.build.addtask('addheader', 'do_deploy', 'do_compile', d)
 }
 
 #############################
@@ -190,11 +189,10 @@ do_deploy:append:k1() {
 }
 
 do_deploy:append:milkv-duo() {
-    if [ -f "${UNPACKDIR}/uEnv-milkv-duo.txt" ]; then
-        cp ${UNPACKDIR}/uEnv-milkv-duo.txt ${DEPLOYDIR}/uEnv.txt
-    fi
+    cp ${UNPACKDIR}/uEnv-milkv-duo.txt ${DEPLOYDIR}/uEnv.txt
+
     install -m 0644 ${B}/u-boot.dtb ${DEPLOYDIR}
-    install -m 0644 ${S}/include/configs/cvi_board_memmap.h ${DEPLOYDIR}
+    install -m 0644 ${B}/u-boot-vendor.bin ${DEPLOYDIR}
 }
 
 do_deploy:append:visionfive2() {
