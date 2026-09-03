@@ -38,8 +38,10 @@ SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
             file://uboot-milkv-duo.env \
             file://uEnv-milkv-duo.txt \
-            file://milkv-duo256m.cfg \
+            file://milkv-duo.cfg \
             "
+SRC_URI:append:milkv-duo256m = " file://milkv-duo256m.cfg"
+SRC_URI:append:milkv-duos = " file://milkv-duos.cfg"
 
 SRCREV:milkv-duo = "fce4beb533674318de796eac9b4f1a49ded7bef6"
 
