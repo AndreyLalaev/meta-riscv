@@ -6,6 +6,8 @@ inherit nopackages deploy
 
 SRC_URI = " \
     git://github.com/milkv-duo/duo-buildroot-sdk-v2;protocol=https;branch=main \
+    file://mmap_conv.py \
+    file://memmap.py \
     file://0001-milkv-duo-fsbl-fix-build-with-newer-binutils.patch \
     file://0002-cpu-riscv-do-not-use-vendor-specific-extension.patch \
 "
@@ -34,9 +36,13 @@ DDR_CFG:milkv-duo = "ddr2_1333_x16"
 DDR_CFG:milkv-duo256m = "ddr3_1866_x16"
 DDR_CFG:milkv-duos = "ddr3_1866_x16"
 
-do_compile () {
-    cp ${DEPLOY_DIR_IMAGE}/cvi_board_memmap.h ${S}/include/cvi_board_memmap.h
+do_configure() {
+    python3 ${UNPACKDIR}/mmap_conv.py --type h \
+        ${UNPACKDIR}/memmap.py \
+        ${S}/include/cvi_board_memmap.h
+}
 
+do_compile () {
     unset LDFLAGS
 
     export ARCH=riscv
@@ -56,7 +62,7 @@ do_compile () {
             --NAND_INFO=00000000 \
             --MONITOR=${DEPLOY_DIR_IMAGE}/fw_dynamic.bin \
             --MONITOR_RUNADDR=${MONITOR_RUNADDR} \
-            --LOADER_2ND=${DEPLOY_DIR_IMAGE}/u-boot.bin \
+            --LOADER_2ND=${DEPLOY_DIR_IMAGE}/u-boot-vendor.bin \
             --BL2=${B}/${CHIP_ARCH}/bl2.bin \
             --compress='lzma' \
             ${B}/${CHIP_ARCH}/fip.bin
