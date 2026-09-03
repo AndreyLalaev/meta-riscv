@@ -39,6 +39,7 @@ SRC_URI:append:orangepi-r2s = " \
 
 SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
+            file://0002-board-sophgo-add-Milk-V-Duo-S.patch \
             file://uboot-milkv-duo.env \
             file://uEnv-milkv-duo.txt \
             file://milkv-duo.cfg \
