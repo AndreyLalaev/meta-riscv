@@ -6,6 +6,8 @@ inherit nopackages deploy
 
 SRC_URI = " \
     git://github.com/milkv-duo/duo-buildroot-sdk-v2;protocol=https;branch=main \
+    file://mmap_conv.py \
+    file://memmap.py \
     file://0001-milkv-duo-fsbl-fix-build-with-newer-binutils.patch \
     file://0002-cpu-riscv-do-not-use-vendor-specific-extension.patch \
 "
@@ -42,9 +44,13 @@ DEFINES  = " \
             -DRTOS_FAST_IMAGE_TYPE=0 \
            "
 
-do_compile () {
-    cp ${DEPLOY_DIR_IMAGE}/cvi_board_memmap.h ${S}/include/cvi_board_memmap.h
+do_configure() {
+    python3 ${UNPACKDIR}/mmap_conv.py --type h \
+        ${UNPACKDIR}/memmap.py \
+        ${S}/include/cvi_board_memmap.h
+}
 
+do_compile () {
     # this is a risc-v bin that contains a busy loop instruction
     # using wfi instruction, this is needed to initialize the
     # secondary core.
@@ -62,7 +68,7 @@ do_compile () {
     oe_runmake -C ${S} \
         CROSS_COMPILE=${HOST_PREFIX} \
         BLCP_2ND_PATH=${B}/blank.bin \
-        LOADER_2ND_PATH=${DEPLOY_DIR_IMAGE}/u-boot.bin \
+        LOADER_2ND_PATH=${DEPLOY_DIR_IMAGE}/u-boot-vendor.bin \
         MONITOR_PATH=${DEPLOY_DIR_IMAGE}/fw_dynamic.bin
 }
 
