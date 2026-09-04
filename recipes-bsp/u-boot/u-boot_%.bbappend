@@ -53,6 +53,9 @@ PV:milkv-duo = "2026.10"
 # configure task customizations
 ###############################
 
+# FIXME
+EXTRA_OEMAKE:append = " HOSTCFLAGS_generated/lib/rsa/rsa-sign.o=-DOPENSSL_ENGINE_STUBS -Wno-deprecated-declarations"
+
 TFTP_SERVER_IP:ae350-ax45mp ?= "127.0.0.1"
 do_configure:prepend:ae350-ax45mp() {
     if [ -f "${UNPACKDIR}/tftp-mmc-boot.txt" ]; then
