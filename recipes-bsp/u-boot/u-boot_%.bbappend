@@ -45,8 +45,7 @@ SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
             file://0001-mmc-cv1800b_sdhci-configure-SDHCI-PHY.patch \
             file://0002-board-sophgo-add-Milk-V-Duo-S.patch \
-            file://uboot-milkv-duo.env \
-            file://uEnv-milkv-duo.txt \
+            file://${UBOOT_ENV_SRC} \
             file://milkv-duo.cfg \
             "
 
@@ -73,12 +72,6 @@ do_configure:prepend:freedom-u540() {
     if [ -f "${UNPACKDIR}/${UBOOT_ENV}.txt" ]; then
         mkimage -O linux -T script -C none -n "U-Boot boot script" \
             -d ${UNPACKDIR}/${UBOOT_ENV}.txt ${UNPACKDIR}/boot.scr.uimg
-    fi
-}
-
-do_configure:prepend:milkv-duo() {
-    if [ -f "${UNPACKDIR}/uboot-milkv-duo.env" ]; then
-        cp ${UNPACKDIR}/uboot-milkv-duo.env ${S}/include/milkv-duo.env
     fi
 }
 
@@ -206,9 +199,6 @@ do_deploy:append:k1() {
 }
 
 do_deploy:append:milkv-duo() {
-    if [ -f "${UNPACKDIR}/uEnv-milkv-duo.txt" ]; then
-        cp ${UNPACKDIR}/uEnv-milkv-duo.txt ${DEPLOYDIR}/uEnv.txt
-    fi
     install -m 0644 ${B}/u-boot.dtb ${DEPLOYDIR}
     install -m 0644 ${B}/u-boot-vendor.bin ${DEPLOYDIR}
 }
