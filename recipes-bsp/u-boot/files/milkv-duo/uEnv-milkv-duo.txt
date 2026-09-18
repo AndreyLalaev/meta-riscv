@@ -7,10 +7,7 @@ setbootargs=setenv bootargs ${root} console=${consoledev},${baudrate} ${optargs}
 fdt=default.dtb
 kernel=uImage.fit
 
-loadaddr=0x81400000
-fdtaddr=0x83000000
+loadfdt=fatload mmc 0:1 ${fdt_addr_r} ${fdt}
+loaduimage=fatload mmc 0:1 ${kernel_comp_addr_r} ${kernel}
 
-loadfdt=fatload mmc 0 ${fdtaddr} ${fdt}
-loaduimage=fatload mmc 0 ${loadaddr} ${kernel}
-
-uenvcmd=echo Booting from SD ...; run loaduimage && run loadfdt && run setbootargs && bootm ${loadaddr} - ${fdtaddr}
+uenvcmd=echo Booting from SD ...; run loaduimage && run loadfdt && run setbootargs && bootm ${kernel_comp_addr_r} - ${fdt_addr_r}
