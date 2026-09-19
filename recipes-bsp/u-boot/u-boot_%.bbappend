@@ -40,7 +40,7 @@ SRC_URI:append:orangepi-r2s = " \
 SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
             file://0002-board-sophgo-add-Milk-V-Duo-S.patch \
-            file://uEnv-milkv-duo.txt \
+            file://${UBOOT_ENV_SRC} \
             file://milkv-duo.cfg \
             "
 
@@ -194,8 +194,6 @@ do_deploy:append:k1() {
 }
 
 do_deploy:append:milkv-duo() {
-    cp ${UNPACKDIR}/uEnv-milkv-duo.txt ${DEPLOYDIR}/uEnv.txt
-
     install -m 0644 ${B}/u-boot.dtb ${DEPLOYDIR}
     install -m 0644 ${B}/u-boot-vendor.bin ${DEPLOYDIR}
 }

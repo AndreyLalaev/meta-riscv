@@ -10,4 +10,8 @@ kernel=uImage.fit
 loadfdt=fatload mmc 0:1 ${fdt_addr_r} ${fdt}
 loaduimage=fatload mmc 0:1 ${kernel_comp_addr_r} ${kernel}
 
-uenvcmd=echo Booting from SD ...; run loaduimage && run loadfdt && run setbootargs && bootm ${kernel_comp_addr_r} - ${fdt_addr_r}
+run loaduimage
+run loadfdt
+run setbootargs
+
+bootm ${kernel_comp_addr_r} - ${fdt_addr_r}
