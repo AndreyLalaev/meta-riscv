@@ -45,6 +45,7 @@ SRC_URI:milkv-duo = " \
             git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=main \
             file://0001-mmc-cv1800b_sdhci-configure-SDHCI-PHY.patch \
             file://0002-board-sophgo-add-Milk-V-Duo-S.patch \
+            file://0001-Add-support-for-OpenSSL-Provider-API.patch \
             file://${UBOOT_ENV_SRC} \
             file://milkv-duo.cfg \
             "
