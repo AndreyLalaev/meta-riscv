@@ -52,6 +52,7 @@ SRC_URI:append:milkv-duo-common = "file://0001-mmc-cv1800b_sdhci-honor-no-1-8-v-
                                    "
 
 SRC_URI:append:milkv-duo256m = " file://0001-board-sophgo-milkv_duo_256m-fix-fdtfile-quoting.patch"
+SRC_URI:append:milkv-duos = " file://0002-board-sophgo-add-Milk-V-Duo-S.patch"
 
 SRC_URI:append:orangepi-r2s = " \
             file://0001-arch-riscv-k1-hot-fix-for-RAM-detection-for-boards-w.patch \
